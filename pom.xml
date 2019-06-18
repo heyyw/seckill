@@ -57,6 +57,13 @@
 			<version>2.7.0</version>
 		</dependency>
 
+		<!-- disruptor 高效队列-->
+		<dependency>
+			<groupId>com.lmax</groupId>
+			<artifactId>disruptor</artifactId>
+			<version>3.4.1</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>

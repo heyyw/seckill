@@ -3,6 +3,8 @@ package com.heyyw.seckill.web;
 
 import com.heyyw.seckill.common.entity.Result;
 import com.heyyw.seckill.common.entity.SuccessKilled;
+import com.heyyw.seckill.queue.disruptor.DisruptorUtil;
+import com.heyyw.seckill.queue.disruptor.SeckillEvent;
 import com.heyyw.seckill.queue.jvm.SeckillQueue;
 import com.heyyw.seckill.service.ISeckillService;
 import io.swagger.annotations.Api;
@@ -251,32 +253,32 @@ public class SeckillController {
 		}
 		return Result.ok();
 	}
-//	@ApiOperation(value="秒杀柒(Disruptor队列)",nickname="科帮网")
-//	@PostMapping("/startDisruptorQueue")
-//	public Result startDisruptorQueue(long seckillId){
-//		seckillService.deleteSeckill(seckillId);
-//		final long killId =  seckillId;
-//		LOGGER.info("开始秒杀八(正常)");
-//		for(int i=0;i<1000;i++){
-//			final long userId = i;
-//			Runnable task = new Runnable() {
-//				@Override
-//				public void run() {
-//					SeckillEvent kill = new SeckillEvent();
-//					kill.setSeckillId(killId);
-//					kill.setUserId(userId);
-//					DisruptorUtil.producer(kill);
-//				}
-//			};
-//			executor.execute(task);
-//		}
-//		try {
-//			Thread.sleep(10000);
-//			Long  seckillCount = seckillService.getSeckillCount(seckillId);
-//			LOGGER.info("一共秒杀出{}件商品",seckillCount);
-//		} catch (InterruptedException e) {
-//			e.printStackTrace();
-//		}
-//		return Result.ok();
-//	}
+	@ApiOperation(value="秒杀柒(Disruptor队列)",nickname="科帮网")
+	@PostMapping("/startDisruptorQueue")
+	public Result startDisruptorQueue(long seckillId){
+		seckillService.deleteSeckill(seckillId);
+		final long killId =  seckillId;
+		LOGGER.info("开始秒杀八(正常)");
+		for(int i=0;i<1000;i++){
+			final long userId = i;
+			Runnable task = new Runnable() {
+				@Override
+				public void run() {
+					SeckillEvent kill = new SeckillEvent();
+					kill.setSeckillId(killId);
+					kill.setUserId(userId);
+					DisruptorUtil.producer(kill);
+				}
+			};
+			executor.execute(task);
+		}
+		try {
+			Thread.sleep(10000);
+			Long  seckillCount = seckillService.getSeckillCount(seckillId);
+			LOGGER.info("一共秒杀出{}件商品",seckillCount);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		return Result.ok();
+	}
 }

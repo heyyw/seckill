@@ -19,7 +19,7 @@ public class SeckillQueue {
     static BlockingQueue<SuccessKilled> blockingQueue = new LinkedBlockingQueue<SuccessKilled>(QUEUE_MAX_SIZE);
     
     /**
-     * 私有的默认构造子，保证外界无法直接实例化
+     * 私有的默认构造，保证外界无法直接实例化
      */
     private SeckillQueue(){};
     /**
